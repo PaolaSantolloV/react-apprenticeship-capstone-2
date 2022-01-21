@@ -9,3 +9,8 @@ export const mockFetchPhoto = {
   title: "NGC 7822 in Cepheus",
   url: "https://apod.nasa.gov/apod/image/2201/IMG_9447_1024.jpg",
 };
+
+export const mockErrorFetchPhoto = {
+  error: "",
+  message: "",
+};
