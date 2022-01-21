@@ -7,6 +7,8 @@ import { usePhotoDate } from "./hooks/usePhotoDate";
 function App() {
   const [date, setDate] = useState("");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
+  const [errorDate, setErrorDate] = useState(false);
 
   const LoadData = async () => {
     const response = await usePhoto();
@@ -16,10 +18,21 @@ function App() {
 
   const LoadNewData = async () => {
     setLoading(true);
-    const response = await usePhotoDate(date);
-    setData(response);
-    setLoading(false);
-    return response;
+    usePhotoDate(date)
+      .then((result) => {
+        setData(result);
+        setError(false);
+        if (result.code === 400) {
+          setErrorDate(true);
+        } else {
+          setErrorDate(false);
+        }
+        setLoading(false);
+      })
+      .catch(() => {
+        setError(true);
+        setLoading(false);
+      });
   };
 
   const [data, setData] = useState(LoadData);
@@ -33,11 +46,19 @@ function App() {
           onClick={LoadNewData}
         />
         {loading === true ? (
-          <Loading />
+          <Loading title="loading" />
+        ) : errorDate === true ? (
+          <h1 title="error-date">
+            Exists a error on the date, Please try with a new date. {data.msg}
+          </h1>
+        ) : error === true || data.lenght < 0 ? (
+          <h1 title="error-date">
+            Exists a error on the request. Please try again or wait a moment.
+          </h1>
         ) : (
           <>
             <img title="picture-of-the-day" src={data.url} />
-            <h2>{data.title}</h2>
+            <h2 title="title">{data.title}</h2>
             <p title="description">{data.explanation}</p>
           </>
         )}

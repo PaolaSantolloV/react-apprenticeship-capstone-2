@@ -8,12 +8,16 @@ const onChange = jest.fn();
 
 describe("<PictureForm>", () => {
   test("should create the pictureForm correctly", () => {
-    const { container, getByTitle } = render(
+    const text =
+      "Do you want watch another picutre of the day? Please select the date";
+    const { container, getByTitle, getByText } = render(
       <PictureForm onClick={onClick} onChange={onChange} />
     );
     const datePicker = getByTitle("date");
     const button = getByTitle("dateButton");
+    const label = getByText(text);
 
+    expect(label).toBeInTheDocument();
     expect(container.querySelector("#form")).toBeValid();
     expect(datePicker).toBeInTheDocument();
     expect(button).toBeInTheDocument();

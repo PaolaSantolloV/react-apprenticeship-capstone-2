@@ -4,11 +4,16 @@ import { act } from "react-dom/test-utils";
 import App from "./App";
 import React from "react";
 import PictureForm from "./components/pictureForm/PictureForm.component";
+import { mockErrorDate } from "./assets/mocks/mockFetch";
 
 const onChange = jest.fn();
 const onClick = jest.fn();
 
-describe("<HomePage>", () => {
+beforeEach(() => {
+  fetch.resetMocks();
+});
+
+describe("<App>", () => {
   test("should render the title app correctly", async () => {
     await act(async () => render(<App />));
     const titleElement = screen.getByText("NASA Picture of the day");
@@ -23,7 +28,7 @@ describe("<HomePage>", () => {
 
   test("should render the title of picture of the day correctly", async () => {
     await act(async () => render(<App />));
-    const titlePicture = screen.getByRole("heading", { level: 2 });
+    const titlePicture = screen.getByTitle("title");
     expect(titlePicture).toBeInTheDocument();
   });
 
@@ -71,8 +76,53 @@ describe("<HomePage>", () => {
       )
     );
     const button = screen.getByTitle("dateButton");
-    fireEvent.click(button);
+    await act(async () => fireEvent.click(button));
 
     expect(button).toBeInTheDocument();
   });
+
+  test("should laoding element render corretly", async () => {
+    const setResponse = jest.fn();
+    const useResponse = jest.spyOn(React, "useState");
+    useResponse.mockImplementation([mockErrorDate, setResponse]);
+
+    await act(async () =>
+      render(
+        <App>
+          <PictureForm onChange={onChange} onClick={onClick} />
+        </App>
+      )
+    );
+    const button = screen.getByTitle("dateButton");
+    fireEvent.click(button);
+    expect(button).toBeInTheDocument();
+
+    const loading = screen.getByTitle("loading");
+    expect(loading).toBeInTheDocument();
+  });
+
+  test("should error date label render corretly", async () => {
+    // const setDate = jest.fn();
+    // const useDate = jest.spyOn(React, "useState");
+    // useDate.mockImplementation([true, setDate]);
+    // await act(async () =>
+    //   render(
+    //     <App>
+    //       <PictureForm
+    //         onChange={onChange}
+    //         onClick={onClick}
+    //         value="06-10-2020"
+    //       />
+    //     </App>
+    //   )
+    // );
+    // const input = screen.getByTitle("date");
+    // fireEvent.change(input, { target: { value: "06-10-2020" } });
+    // const button = screen.getByTitle("dateButton");
+    // await act(async () => fireEvent.click(button));
+    // const error = screen.getByTitle("error-date");
+    // expect(error).toBeInTheDocument();
+  });
+
+  test("should error label render corretly when the request failed", async () => {});
 });

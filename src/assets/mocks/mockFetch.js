@@ -14,3 +14,9 @@ export const mockErrorFetchPhoto = {
   error: "",
   message: "",
 };
+
+export const mockErrorDate = {
+  code: 400,
+  msg: "time data '01-10-2014' does not match format '%Y-%m-%d'",
+  service_version: "v1",
+};

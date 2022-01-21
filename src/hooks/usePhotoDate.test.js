@@ -1,6 +1,10 @@
 import "@testing-library/jest-dom";
 import { usePhotoDate } from "./usePhotoDate";
-import { mockFetchPhoto, mockErrorFetchPhoto } from "../assets/mocks/mockFetch";
+import {
+  mockFetchPhoto,
+  mockErrorFetchPhoto,
+  mockErrorDate,
+} from "../assets/mocks/mockFetch";
 
 beforeEach(() => {
   fetch.resetMocks();
@@ -13,6 +17,15 @@ describe("useFetch hook", () => {
     const response = await usePhotoDate(date);
     expect(response).toEqual(mockFetchPhoto);
     expect(fetch).toHaveBeenCalledTimes(1);
+  });
+
+  test("return error when the date is invalid", async () => {
+    fetch.mockReject(() => Promise.reject(mockErrorDate));
+    const date = "01-10-2014";
+    const response = await usePhotoDate(date);
+
+    expect(response).toEqual(mockErrorDate);
+    expect(fetch).toHaveBeenCalled();
   });
 
   test("return error when failure", async () => {
