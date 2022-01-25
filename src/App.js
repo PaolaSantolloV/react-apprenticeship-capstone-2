@@ -1,8 +1,16 @@
 import React, { useState } from "react";
+
 import Loading from "./components/loading/Loading.component";
 import PictureForm from "./components/pictureForm/PictureForm.component";
 import { usePhoto } from "./hooks/usePhoto";
 import { usePhotoDate } from "./hooks/usePhotoDate";
+import {
+  StyledError,
+  StyledErrorImg,
+  StyledLogo,
+  StyledTitle,
+} from "./App.styles";
+import PictureCard from "./components/pictureCard/PictureCard.component";
 
 function App() {
   const [date, setDate] = useState("");
@@ -11,8 +19,10 @@ function App() {
   const [errorDate, setErrorDate] = useState(false);
 
   const LoadData = async () => {
+    setLoading(true);
     const response = await usePhoto();
     setData(response);
+    setLoading(false);
     return response;
   };
 
@@ -40,7 +50,11 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <h1>NASA Picture of the day</h1>
+        <StyledTitle>
+          <StyledLogo src="NASA_logo.png" alt="logo" />
+          <br />
+          NASA Picture of the day
+        </StyledTitle>
         <PictureForm
           onChange={(event) => setDate(event.target.value)}
           onClick={LoadNewData}
@@ -48,19 +62,26 @@ function App() {
         {loading === true ? (
           <Loading title="loading" />
         ) : errorDate === true ? (
-          <h1 title="error-date">
-            Exists a error on the date, Please try with a new date. {data.msg}
-          </h1>
+          <StyledError title="error-date">
+            Exists a error on the date, Please try with a new date. <br />
+            {data.msg}
+            <br />
+            <StyledErrorImg src="error2.gif" alt="error" />
+          </StyledError>
         ) : error === true || data.lenght < 0 ? (
-          <h1 title="error-date">
+          <StyledError title="error-request">
             Exists a error on the request. Please try again or wait a moment.
-          </h1>
+            <br />
+            <StyledErrorImg src="error2.gif" alt="error" />
+          </StyledError>
         ) : (
-          <>
-            <img title="picture-of-the-day" src={data.url} />
-            <h2 title="title">{data.title}</h2>
-            <p title="description">{data.explanation}</p>
-          </>
+          <PictureCard
+            title={data.title}
+            explanation={data.explanation}
+            date={data.date}
+            url={data.url}
+            mediaType={data.media_type}
+          />
         )}
       </header>
     </div>

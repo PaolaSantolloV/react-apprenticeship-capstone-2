@@ -1,8 +1,9 @@
 import React from "react";
+import { StyledLoading } from "./Loading.styles";
 
 // eslint-disable-next-line react/prop-types
 function Loading() {
-  return <h1 title="loading">Loading...</h1>;
+  return <StyledLoading title="loading" src="loading.png" alt="loading" />;
 }
 
 export default Loading;

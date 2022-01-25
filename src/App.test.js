@@ -20,24 +20,6 @@ describe("<App>", () => {
     expect(titleElement).toBeInTheDocument();
   });
 
-  test("should render the image of picture of the day correctly", async () => {
-    await act(async () => render(<App />));
-    const picture = screen.getByTitle("picture-of-the-day");
-    expect(picture).toBeInTheDocument();
-  });
-
-  test("should render the title of picture of the day correctly", async () => {
-    await act(async () => render(<App />));
-    const titlePicture = screen.getByTitle("title");
-    expect(titlePicture).toBeInTheDocument();
-  });
-
-  test("should render the description of picture of the day correctly", async () => {
-    await act(async () => render(<App />));
-    const descriptionPicture = screen.getByTitle("description");
-    expect(descriptionPicture).toBeInTheDocument();
-  });
-
   test("should render the pictureForm correctly", async () => {
     await act(async () =>
       render(
@@ -61,6 +43,7 @@ describe("<App>", () => {
     );
     const input = screen.getByTitle("date");
     fireEvent.change(input, { target: { value: "2020-10-06" } });
+    expect(input).toBeInTheDocument();
   });
 
   test("should loadNew picture correctly", async () => {
