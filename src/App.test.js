@@ -64,7 +64,7 @@ describe("<App>", () => {
     expect(button).toBeInTheDocument();
   });
 
-  test("should laoding element render corretly", async () => {
+  test("should loading element render corretly", async () => {
     const setResponse = jest.fn();
     const useResponse = jest.spyOn(React, "useState");
     useResponse.mockImplementation([mockErrorDate, setResponse]);
@@ -83,29 +83,4 @@ describe("<App>", () => {
     const loading = screen.getByTitle("loading");
     expect(loading).toBeInTheDocument();
   });
-
-  test("should error date label render corretly", async () => {
-    // const setDate = jest.fn();
-    // const useDate = jest.spyOn(React, "useState");
-    // useDate.mockImplementation([true, setDate]);
-    // await act(async () =>
-    //   render(
-    //     <App>
-    //       <PictureForm
-    //         onChange={onChange}
-    //         onClick={onClick}
-    //         value="06-10-2020"
-    //       />
-    //     </App>
-    //   )
-    // );
-    // const input = screen.getByTitle("date");
-    // fireEvent.change(input, { target: { value: "06-10-2020" } });
-    // const button = screen.getByTitle("dateButton");
-    // await act(async () => fireEvent.click(button));
-    // const error = screen.getByTitle("error-date");
-    // expect(error).toBeInTheDocument();
-  });
-
-  test("should error label render corretly when the request failed", async () => {});
 });
